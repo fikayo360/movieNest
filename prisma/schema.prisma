@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String      @id @default(uuid()) @map("_id") @db.Uuid
+  email      String    @unique
+  usernamme  String    @unique
+  password   String
+  role       String?
+  resettoken String?
+  hashedRt   String?
+  Booking    Booking[]
+}
+
+model Theater {
+  id              String      @id @default(uuid()) @map("_id") @db.Uuid
+  name            String
+  location        String
+  seatingCapacity Int
+  Movie           Movie[]
+  Showtime        Showtime[]
+  Seat            Seat[]
+}
+
+model Movie {
+  id         String      @id @default(uuid()) @map("_id") @db.Uuid
+  title      String
+  genre      String
+  duration   Int
+  rating     Float
+  posterimg  String
+  expiryDate DateTime
+  theaterId  String   @db.Uuid
+  theater    Theater    @relation(fields: [theaterId], references: [id])
+  Showtime   Showtime[]
+}
+
+model Showtime {
+  id        String      @id @default(uuid()) @map("_id") @db.Uuid
+  movieId   String      @db.Uuid
+  theaterId String      @db.Uuid
+  startTime DateTime
+  endTime   DateTime
+  movie     Movie     @relation(fields: [movieId], references: [id])
+  theater   Theater   @relation(fields: [theaterId], references: [id])
+  Seat      Seat[]
+  Booking   Booking[]
+}
+
+model Seat {
+  id           String      @id @default(uuid()) @map("_id") @db.Uuid
+  theaterId    String     @db.Uuid
+  seatnumber   Int
+  availability Boolean   @default(true)
+  showtimeId   String    @db.Uuid
+  theater      Theater   @relation(fields: [theaterId], references: [id])
+  showtime     Showtime? @relation(fields: [showtimeId], references: [id])
+}
+
+model Booking {
+  id          String      @id @default(uuid()) @map("_id") @db.Uuid
+  userId      String     @db.Uuid
+  showtimeId  String     @db.Uuid
+  theaterId   String     @db.Uuid
+  availability Boolean   @default(true)
+  seatnumber  Int
+  user        User     @relation(fields: [userId], references: [id])
+  showtime    Showtime @relation(fields: [showtimeId], references: [id])
+}
