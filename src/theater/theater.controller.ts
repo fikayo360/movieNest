@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, Response, HttpCode,HttpStatus, UseGuards,Req,Param, Delete} from '@nestjs/common';
+import { Body, Controller, Get, Post, HttpCode,HttpStatus, UseGuards,Req,Param, Delete} from '@nestjs/common';
 import { TheaterService } from './theater.service';
 import { createTheaterDto } from './dto/createTheater';
 import { JwtAuthGuard } from 'src/shared/guards';
