@@ -5,25 +5,29 @@ import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class TheaterService {
-    constructor(private readonly db:theaterRepo,private logger:Logger){}
+    constructor(private readonly db:theaterRepo){}
 
     async createTheater(dto:createTheaterDto){
         await this.db.createTheater(dto)
-        this.logger.log('theater created successfully')
+        // this.logger.log('theater created successfully')
         return 'theater created successfully'
     }
 
     async deleteTheater(id:string){
         await this.db.deleteTheater(id)
+        console.log(id)
+        return 'theater deleted successfully'
         
     }
 
     async getAllTheater(){
-        await this.db.getAllTheaters()
+        const theaters = await this.db.getAllTheaters()
+        return theaters
     }
 
     async getTheater(id:string){
-        await this.db.getSingle(id)
+       const theater =  await this.db.getSingle(id)
+       return theater
     }
 
 }

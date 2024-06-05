@@ -10,19 +10,19 @@ export class ShowtimesController {
   @UseGuards(JwtAuthGuard)
   @Post('new')
   @HttpCode(HttpStatus.CREATED)
-  createShowtime(@Body() dto:createShowtimesDto,showtimeId:string) {
-    return this.showtimesService.createShowtimes(dto,showtimeId)
+  createShowtime(@Body() dto:createShowtimesDto) {
+    return this.showtimesService.createShowtimes(dto)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('showtimes/:movieId')
+  @Get('sh/:movieId')
   @HttpCode(HttpStatus.OK)
   getShowtimesForMovie(@Param('movieId') movieId:string) {
     return this.showtimesService.getShowtimes(movieId)
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('delete/:id')
+  @Delete('dsh/:id')
   @HttpCode(HttpStatus.OK)
   deleteMovie(@Param('id') id:string ){
     return this.showtimesService.deleteShowtimes(id)

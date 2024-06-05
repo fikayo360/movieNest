@@ -19,6 +19,6 @@ export class BookingController {
   @Get('verifyBooking/:id')
   @HttpCode(HttpStatus.OK)
   forgotPassword(@Param('id') id:string){
-    return this.bookingService.getShowtimeSeats(id)
+    return this.bookingService.verifyBooking(id)
   }
 }

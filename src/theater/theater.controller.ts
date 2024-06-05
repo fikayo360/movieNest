@@ -8,17 +8,10 @@ export class TheaterController {
   constructor(private readonly theaterService: TheaterService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('signup')
+  @Post('newTheater')
   @HttpCode(HttpStatus.CREATED)
   createTheater(@Body() dto:createTheaterDto){
     return this.theaterService.createTheater(dto)
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Delete('delete/:id')
-  @HttpCode(HttpStatus.OK)
-  deleteTheater(@Param('id') id:string){
-     return this.theaterService.deleteTheater(id)
   }
 
   @UseGuards(JwtAuthGuard)
@@ -35,4 +28,10 @@ export class TheaterController {
     return this.theaterService.getTheater(id)
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Delete('delete/:id')
+  @HttpCode(HttpStatus.OK)
+  deleteTheater(@Param('id') id:string){
+     return this.theaterService.deleteTheater(id)
+  }
 }

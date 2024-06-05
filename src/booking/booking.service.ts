@@ -5,15 +5,16 @@ import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class BookingService {
-    constructor(private readonly db:bookingDB,private logger:Logger){}
+    constructor(private readonly db:bookingDB,){}
     async createBookings(dto:createBookingDto):Promise<string>{
         await this.db.createBooking(dto)
-        this.logger.log(`Bookings created succesfully`)
+        // this.logger.log(`Bookings created succesfully`)
         return 'booking created successfully'
     }
 
-    async getShowtimeSeats(id:string):Promise<any>{
+    async verifyBooking(id:string):Promise<any>{
         const bookings = await this.db.getBookingById(id)
-        return bookings
+        if(!bookings) return 'booking not found'
+        return {bookings,data:"booking verified successfully good to go"}
     }
 }

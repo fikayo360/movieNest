@@ -7,10 +7,10 @@ import { createBookingDto } from './dto/createBookingSchema';
 export class bookingDB{
     constructor(private readonly prisma:PrismaService){}
     createBooking(dto:createBookingDto){
-        const {userId,theaterId,showtimeId,seatnumber,availability} = dto
+        const {userId,showtimeId,seatnumber,totalPrice} = dto
         return this.prisma.booking.create({
             data:{
-                userId,theaterId,showtimeId,seatnumber,availability
+                userId,showtimeId,seatnumber,totalPrice,
             }
         })
     }

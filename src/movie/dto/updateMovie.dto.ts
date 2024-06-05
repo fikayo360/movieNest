@@ -1,36 +1,35 @@
-import { IsNotEmpty, IsString, IsEmail, Length } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, Length, IsNumber, IsOptional } from 'class-validator';
 
 export class updateMovieDto {
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
-    public id: string;
+    public movieId: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     public title: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
-    @IsEmail()
     public genre: string;
 
-    @IsNotEmpty()
-    @IsString()
+    @IsOptional()
+    @IsNumber()
     public duration: number;
 
-    @IsNotEmpty()
-    @IsString()
+    @IsOptional()
+    @IsNumber()
     public rating: number;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     public posterImg: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     public expiryDate: string;
 
-    @IsNotEmpty()
+    @IsOptional()
     @IsString()
     public theaterId: string;
 }

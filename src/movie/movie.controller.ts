@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post, Request, Response, HttpCode,HttpStatus, UseGuards,Req,Param, Delete, Query} from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, Response, HttpCode,HttpStatus, UseGuards,Req,Param, Delete, Query,Patch} from '@nestjs/common';
 import {createMovieDto,updateMovieDto} from './dto/index'
 import { MovieService } from './movie.service';
 import { JwtAuthGuard } from 'src/shared/guards';
+import { title } from 'process';
 
 @Controller('movie')
 export class MovieController {
@@ -15,11 +16,25 @@ export class MovieController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Post('update')
+  @Patch('update')
   @HttpCode(HttpStatus.OK)
-  signin(@Body() dto:updateMovieDto){
-    const movieId = dto.id
-    return this.movieService.updateMovie(dto,movieId)
+  update(@Body() dto:updateMovieDto){
+    return this.movieService.updateMovie(dto)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('search')
+  @HttpCode(HttpStatus.OK)
+  searchMovie(@Query('title') title, @Query('duration') duration, @Query('genre') genre, @Query('rating') rating){
+    let queryItems = {title,duration,genre,rating}
+    return this.movieService.searchMovie(queryItems)
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('tmovies/:tId')
+  @HttpCode(HttpStatus.OK)
+  getMoviesByTheater(@Param('tId') tId:string ){
+    return this.movieService.getMoviesByTheater(tId)
   }
 
   @UseGuards(JwtAuthGuard)
@@ -27,19 +42,5 @@ export class MovieController {
   @HttpCode(HttpStatus.OK)
   deleteMovie(@Param('movieId') movieId:string ){
     return this.movieService.deleteMovie(movieId)
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('search')
-  @HttpCode(HttpStatus.OK)
-  searchMovie(@Query('movieQuery') movieQuery:any){
-    return this.movieService.searchMovie(movieQuery)
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Get('movie/:tId')
-  @HttpCode(HttpStatus.OK)
-  getMoviesByTheater(@Param('tId') tId:string ){
-    return this.movieService.getMoviesByTheater(tId)
   }
 }

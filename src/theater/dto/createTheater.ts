@@ -4,10 +4,6 @@ export class createTheaterDto {
 
     @IsNotEmpty()
     @IsString()
-    public id: string;
-
-    @IsNotEmpty()
-    @IsString()
     public name: string;
 
     @IsNotEmpty()

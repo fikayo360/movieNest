@@ -3,8 +3,8 @@ import { IsNotEmpty, IsNumber, IsString, Length} from 'class-validator';
 export class refreshToken {
 
     @IsNotEmpty()
-    @IsNumber()
-    public userId: string;
+    @IsString()
+    public email: string;
 
     @IsNotEmpty()
     @IsString()

@@ -6,30 +6,33 @@ import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class SeatsService {
-    constructor(private readonly db:seatDb,private logger:Logger){}
+    constructor(private readonly db:seatDb,){}
     async createSeat(dto:createSeatDto):Promise<string>{
         await this.db.createSeat(dto)
-        this.logger.log('seat created succesfully')
+        // this.logger.log('seat created succesfully')
         return 'seat created successfully'
     }
 
-    async getShowtimeSeats(showtimeId:string):Promise<SeatType[]>{
+    async getShowtimeSeats(showtimeId:string):Promise<any>{
         const seats = await this.db.getShowtimeSeats(showtimeId)
+        if(seats.length === 0) return 'no seats found'
         return seats
     }
 
-    async getAvailableSeats(showtimeId:string):Promise<SeatType[]>{
+    async getAvailableSeats(showtimeId:string):Promise<any>{
         const seats = await this.db.getAvailableSeats(showtimeId)
+        if(seats.length === 0) return 'no seats found'
         return seats
-
     }
 
-    async getUnAvailableSeats(showtimeId:string):Promise<SeatType[]>{
+    async getUnAvailableSeats(showtimeId:string):Promise<any>{
         const seats = await this.db.getUnAvailableSeats(showtimeId)
+        if(seats.length === 0) return 'no seats found'
         return seats
     }
 
     async chooseSeats(id:string, seatNo:number){
         await this.db.updateSeatStatus(id, seatNo)
+        return `seat ${seatNo} has been selected`
     }
 }

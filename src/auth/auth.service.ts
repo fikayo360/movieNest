@@ -10,18 +10,18 @@ import { authDB } from './auth.respository';
 
 @Injectable()
 export class AuthService {
-    constructor(private jwtService:JwtService, private mailService:MailerService,private db:authDB, private logger:Logger){}
+    constructor(private jwtService:JwtService, private mailService:MailerService,private db:authDB){}
 
     public async signin(dto:signInDto){
-        const {usernamme,password} = dto
-        const user = await this.db.findUsername(usernamme)
+        const {username,password} = dto
+        const user = await this.db.findUsername(username)
           if (!user){
-             this.logger.error('access denied not a user')
-             throw new ForbiddenException('Access Denied')
+            //  this.logger.error('access denied not a user')
+             throw new ForbiddenException('user not found')
             }
           const passwordMatches = await this.comparePasswords(user.password, password);
           if (!passwordMatches){
-            this.logger.error('wrong password')
+            // this.logger.error('wrong password')
             throw new ForbiddenException('Access Denied wrong password');
           }
           const tokens = await this.getTokens(user.id,user.email)
@@ -30,23 +30,23 @@ export class AuthService {
     }
 
     public async signup(dto:signUpDto){
-        const {usernamme,password,email} = dto
-        const userExists = await this.db.findUsername(usernamme)
+        const {username,password,email} = dto
+        const userExists = await this.db.findUsername(username)
           if (userExists) {
-            this.logger.error('user already exists')
+            // this.logger.error('user already exists')
             throw new BadRequestException('user already exists');
           }
 
           const emailExists = await this.db.findEmail(email)
       
           if (emailExists) {
-            this.logger.error('user already exists')
+            // this.logger.error('user already exists')
             throw new BadRequestException('emailaddress already exists');
           }
       
           const hashedPassword = await this.hashPassword(password);
           const defaultRole = 'user'
-          const user = {email,usernamme,password:hashedPassword,role:defaultRole}
+          const user = {email,username,password:hashedPassword,role:defaultRole}
           const tokens = await this.db.createUser(user)
           return tokens ;
     }
@@ -55,7 +55,7 @@ export class AuthService {
         const {email} = dto
         const resetToken = this.sendToken(email)
         await this.db.updateUserResetToken(email,resetToken)
-        this.logger.log(`otp sent sent to ${email}`)
+        // this.logger.log(`otp sent sent to ${email}`)
         return 'otp sent succesfully' 
     }
 
@@ -66,10 +66,10 @@ export class AuthService {
         if(user.resettoken === token){
           const hashToken = bcrypt.hashSync(newPassword,8)
           await this.db.updateHashToken(user.id,hashToken)
-          this.logger.log('password reset succesfully')
+          // this.logger.log('password reset succesfully')
           return 'password reset succesfully'
         }else{
-          this.logger.log('access denied')
+          // this.logger.log('access denied')
           return "access denied"
         }
     }
@@ -98,17 +98,17 @@ export class AuthService {
       }
       
       async refreshTokens(dto:refreshToken,req:any): Promise<Tokens> {
-        const {userId,rt} = dto
-        const user = await this.db.findId(userId)
+        const {email,rt} = dto
+        const user = await this.db.findEmail(email)
         if (!user || !user.hashedRt){ 
-          this.logger.error(`access denied for ${user.email} refresh token`)
-          throw new ForbiddenException('Access Denied')
+          // this.logger.error(`access denied for ${user.email} refresh token`)
+          throw new ForbiddenException('Access Denied no user found')
         }
         const rtMatches = await bcrypt.compare(rt,user.hashedRt);
         console.log(rtMatches);
         if (!rtMatches){ 
-          this.logger.error('access denied refresh tokens dont match ')
-          throw new ForbiddenException('Access Denied')
+          // this.logger.error('access denied refresh tokens dont match ')
+          throw new ForbiddenException('Access Denied token does not match')
         }
         const tokens = await this.getTokens(user.id, user.email);
         await this.db.updateRefreshTokenHash(user.id, tokens.refresh_token);
@@ -126,7 +126,7 @@ export class AuthService {
         const [at, rt] = await Promise.all([
           this.jwtService.signAsync(jwtPayload, {
             secret: 'AT_SECRET',
-            expiresIn: '15m',
+            expiresIn: '1d',
           }),
           this.jwtService.signAsync(jwtPayload, {
             secret:'RT_SECRET',
@@ -163,7 +163,7 @@ export class AuthService {
           subject: `forgot password`,
           text: `we sent an otp use it to reset your password: ${tokenData}`
         });
-
+        console.log(tokenData)
         return tokenData
       }
 }

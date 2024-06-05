@@ -17,14 +17,16 @@ export class movieDB {
         )
     }
 
-    updateMovie(dto:updateMovieDto,movieId:string){
+    updateMovie(dto:updateMovieDto) {
+        const { movieId, ...updateData } = dto;
+      
         return this.prisma.movie.update({
-            where:{
-              id:movieId
-            },
-            data:dto
-          })
-    }
+          where: {
+            id: movieId,
+          },
+          data: updateData,
+        });
+      }
 
     deleteMovie(movieId:string){
         return this.prisma.movie.delete({
@@ -48,19 +50,19 @@ export class movieDB {
     }
 
     
-    getMoviesByDuration(duration:number){
+    getMoviesByDuration(duration){
         return this.prisma.movie.findMany({
             where:{
-                duration:duration
+                duration:parseFloat(duration)
             }
         })
     }
 
     
-    getMoviesByRating(rating:number){
+    getMoviesByRating(rating){
         return this.prisma.movie.findMany({
             where:{
-                rating:rating
+                rating:parseFloat(rating)
             }
         })
     }

@@ -1,6 +1,6 @@
 export interface CreatedUser{
     email: string;
-    usernamme:string;
+    username:string;
     password:string;
     role:string;
 }

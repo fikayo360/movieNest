@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsEmail, Length } from 'class-validator';
+import { IsNotEmpty, IsString, IsEmail, Length, IsNumber, IsBoolean, IsOptional } from 'class-validator';
 
 export class createSeatDto {
 
@@ -7,12 +7,11 @@ export class createSeatDto {
     public theaterId: string;
 
     @IsNotEmpty()
-    @IsString()
-    @IsEmail()
+    @IsNumber()
     public seatnumber: number;
 
-    @IsNotEmpty()
-    @IsString()
+    @IsOptional()
+    @IsBoolean()
     public availability: boolean;
 
     @IsNotEmpty()

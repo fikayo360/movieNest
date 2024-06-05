@@ -6,12 +6,10 @@ import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class ShowtimesService {
-    constructor(private readonly db:showtimeDB,private pr:PrismaService,private logger:Logger){}
-    async createShowtimes(dto:Showtimes,showtimeId:string):Promise<string>{
-        const {theaterId} = dto
+    constructor(private readonly db:showtimeDB,private pr:PrismaService,){}
+    async createShowtimes(dto:Showtimes):Promise<string>{
         await this.db.createShowtime(dto)
-        await this.createShowtimesSeats(theaterId,showtimeId)
-        this.logger.log('created succesfully')
+        // this.logger.log('created succesfully')
         return 'created succesfully'
     }
 
@@ -22,7 +20,7 @@ export class ShowtimesService {
 
     async deleteShowtimes(id:string){
         await this.db.deleteShowtimes(id)
-        this.logger.log(`showtime with id: ${id} deleted succesfully`)
+        // this.logger.log(`showtime with id: ${id} deleted succesfully`)
         return `showtime with id: ${id} deleted succesfully`
     }
 

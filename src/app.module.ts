@@ -11,8 +11,9 @@ import { ThrottlerModule } from '@nestjs/throttler';
 import { APP_GUARD } from '@nestjs/core';
 import { ThrottlerGuard } from '@nestjs/throttler';
 
+
 @Module({
-  imports: [TheaterModule, MovieModule, ShowtimesModule, SeatsModule, AuthModule, BookingModule,
+  imports: [ TheaterModule, MovieModule, ShowtimesModule, SeatsModule, BookingModule,AuthModule,
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     ThrottlerModule.forRoot([{
       ttl: 60000,
@@ -31,11 +32,12 @@ import { ThrottlerGuard } from '@nestjs/throttler';
   ],
   controllers: [],
   providers: [
-      Logger,
-       {
-           provide: APP_GUARD,
-           useClass: ThrottlerGuard
-       }
+      // Logger,
+      //  {
+      //      provide: APP_GUARD,
+      //      useClass: ThrottlerGuard
+      //  }
   ],
 })
+
 export class AppModule {}

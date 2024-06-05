@@ -2,7 +2,7 @@
 CREATE TABLE "User" (
     "_id" UUID NOT NULL,
     "email" TEXT NOT NULL,
-    "usernamme" TEXT NOT NULL,
+    "username" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "role" TEXT,
     "resettoken" TEXT,
@@ -40,8 +40,8 @@ CREATE TABLE "Showtime" (
     "_id" UUID NOT NULL,
     "movieId" UUID NOT NULL,
     "theaterId" UUID NOT NULL,
-    "startTime" TIMESTAMP(3) NOT NULL,
-    "endTime" TIMESTAMP(3) NOT NULL,
+    "startTime" TEXT NOT NULL,
+    "endTime" TEXT NOT NULL,
 
     CONSTRAINT "Showtime_pkey" PRIMARY KEY ("_id")
 );
@@ -62,8 +62,7 @@ CREATE TABLE "Booking" (
     "_id" UUID NOT NULL,
     "userId" UUID NOT NULL,
     "showtimeId" UUID NOT NULL,
-    "theaterId" UUID NOT NULL,
-    "availability" BOOLEAN NOT NULL DEFAULT true,
+    "totalPrice" INTEGER NOT NULL,
     "seatnumber" INTEGER NOT NULL,
 
     CONSTRAINT "Booking_pkey" PRIMARY KEY ("_id")
@@ -73,7 +72,7 @@ CREATE TABLE "Booking" (
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_usernamme_key" ON "User"("usernamme");
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- AddForeignKey
 ALTER TABLE "Movie" ADD CONSTRAINT "Movie_theaterId_fkey" FOREIGN KEY ("theaterId") REFERENCES "Theater"("_id") ON DELETE RESTRICT ON UPDATE CASCADE;

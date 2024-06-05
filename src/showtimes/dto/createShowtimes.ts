@@ -12,7 +12,6 @@ export class createShowtimesDto {
 
     @IsNotEmpty()
     @IsString()
-    @IsEmail()
     public startTime: any;
 
     @IsNotEmpty()

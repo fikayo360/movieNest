@@ -8,7 +8,7 @@ export class authDB {
     // methods
      findUsername(username:string){
         return this.prisma.user.findUnique({
-            where: {usernamme:username},
+            where: {username:username},
         });
     }
 
@@ -19,11 +19,11 @@ export class authDB {
     }
 
     createUser(user:CreatedUser){
-        const {email,usernamme,password,role:defaultRole} = user
+        const {email,username,password,role:defaultRole} = user
         return this.prisma.user.create(
             {
                 data:{
-                  email:email,usernamme:usernamme,password,hashedRt:'',resettoken:'',role:defaultRole
+                  email:email,username,password,hashedRt:'',resettoken:'',role:defaultRole
                 }
               }
         )

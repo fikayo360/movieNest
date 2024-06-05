@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Request, Response, HttpCode,HttpStatus, UseGuards,Req,Param, Delete, Query} from '@nestjs/common';
+import { Body, Controller, Get, Post, Request, Response, HttpCode,HttpStatus, UseGuards,Req,Param, Delete, Query, Patch} from '@nestjs/common';
 import { SeatsService } from './seats.service';
 import { SeatType } from './types/seats.types';
 import { createSeatDto } from './dto/createSeats.dto';
@@ -16,7 +16,7 @@ export class SeatsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('seats/:showtimeId')
+  @Get('allSeats/:showtimeId')
   @HttpCode(HttpStatus.OK)
   getShowtimeSeats(@Param('showtimeId') showtimeId:string) {
     return this.seatsService.getShowtimeSeats(showtimeId)
@@ -37,9 +37,9 @@ export class SeatsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('chooseSeats/:id')
+  @Patch('chooseSeats')
   @HttpCode(HttpStatus.OK)
-  chooseSeats(@Param('id') id:string,@Body() seatNumber:number ){
+  chooseSeats(@Body('id') id:string, @Body('seatNumber') seatNumber:number ){
     return this.seatsService.chooseSeats(id,seatNumber)
   }
 

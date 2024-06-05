@@ -6,10 +6,10 @@ import { createSeatDto } from './dto/createSeats.dto';
 export class seatDb {
     constructor(private readonly prisma:PrismaService){}
     createSeat(dto:createSeatDto){
-        const {theaterId,seatNumber,availability,showtimeId} = dto
+        const {theaterId,seatnumber,showtimeId} = dto
         return this.prisma.seat.create({
             data:{
-                theaterId,seatnumber:seatNumber,availability,showtimeId
+                theaterId,seatnumber,showtimeId
             }
         })
     }
@@ -40,9 +40,9 @@ export class seatDb {
         })
     }
 
-    updateSeatStatus(id:string,seatnumber:number){
+    updateSeatStatus(id:string,seatNumber:number){
         return this.prisma.seat.update({
-            where: { id, seatnumber}, 
+            where: { id, seatnumber:seatNumber}, 
             data: { availability: false }
           });
     }

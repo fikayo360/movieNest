@@ -4,7 +4,7 @@ export class signInDto {
 
     @IsNotEmpty()
     @IsString()
-    public usernamme: string;
+    public username: string;
 
     @IsNotEmpty()
     @IsString()

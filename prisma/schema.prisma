@@ -16,7 +16,7 @@ datasource db {
 model User {
   id         String      @id @default(uuid()) @map("_id") @db.Uuid
   email      String    @unique
-  usernamme  String    @unique
+  username  String    @unique
   password   String
   role       String?
   resettoken String?
@@ -51,8 +51,8 @@ model Showtime {
   id        String      @id @default(uuid()) @map("_id") @db.Uuid
   movieId   String      @db.Uuid
   theaterId String      @db.Uuid
-  startTime DateTime
-  endTime   DateTime
+  startTime String
+  endTime   String
   movie     Movie     @relation(fields: [movieId], references: [id])
   theater   Theater   @relation(fields: [theaterId], references: [id])
   Seat      Seat[]
@@ -73,8 +73,7 @@ model Booking {
   id          String      @id @default(uuid()) @map("_id") @db.Uuid
   userId      String     @db.Uuid
   showtimeId  String     @db.Uuid
-  theaterId   String     @db.Uuid
-  availability Boolean   @default(true)
+  totalPrice  Int
   seatnumber  Int
   user        User     @relation(fields: [userId], references: [id])
   showtime    Showtime @relation(fields: [showtimeId], references: [id])
